@@ -15,7 +15,7 @@ import 'package:espo_crm_client/views/account_page/page.dart';
 //import 'package:movie/views/gallery_page/page.dart';
 //import 'package:movie/views/home_page/page.dart';
 //import 'package:movie/views/listdetail_page/page.dart';
-//import 'package:movie/views/login_page/page.dart';
+import 'package:espo_crm_client/views/login_page/page.dart';
 import 'package:espo_crm_client/views/main_page/page.dart';
 //import 'package:movie/views/moviedetail_page/page.dart';
 //import 'package:movie/views/mylists_page/page.dart';
@@ -60,7 +60,7 @@ Future<Widget> createApp() async {
 //      'discoverPage': DiscoverPage(),
 //      'comingPage': ComingPage(),
       'accountPage': AccountPage(),
-//      'loginpage': LoginPage(),
+      'loginpage': LoginPage(),
 //      'moviedetailpage': MovieDetailPage(),
 //      'tvdetailpage': TVDetailPage(),
 //      'peopledetailpage': PeopleDetailPage(),
