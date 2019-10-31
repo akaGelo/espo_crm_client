@@ -11,7 +11,6 @@ class Lead {
   String phone;
   String emailAddress;
 
-
   Lead();
 
   factory Lead.fromJson(Map<String, dynamic> json) => _$LeadFromJson(json);
@@ -23,7 +22,6 @@ class Lead {
 class FullLead extends Lead {
   List<EmailAddressData> emailAddressData;
   List<PhoneNumberData> phoneNumberData;
-
 
   FullLead();
 

@@ -41,7 +41,7 @@ Widget buildView(
           backgroundColor: _theme.backgroundColor,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: Adapt.px(44)),
+              icon: Icon(Icons.home, key: Key("testKey"), size: Adapt.px(44)),
               title: Text("Home"),
             ),
             BottomNavigationBarItem(

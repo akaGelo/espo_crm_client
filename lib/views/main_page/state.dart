@@ -1,4 +1,3 @@
-
 import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';

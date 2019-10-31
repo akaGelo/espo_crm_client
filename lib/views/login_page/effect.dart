@@ -1,24 +1,31 @@
+import 'package:espo_crm_client/actions/api.dart';
+import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 
 import 'package:espo_crm_client/customwidgets/custom_stfstate.dart';
 import 'package:espo_crm_client/globalbasestate/action.dart';
 import 'package:espo_crm_client/globalbasestate/store.dart';
+import 'package:retrofit/http.dart';
 import 'action.dart';
 import 'state.dart';
 import 'package:toast/toast.dart';
 
 Effect<LoginPageState> buildEffect() {
   return combineEffects(<Object, Effect<LoginPageState>>{
-    LoginPageAction.action: _onAction,
+    LoginPageAction.urlChanged: _onValueChange,
+    LoginPageAction.accoutChanged: _onValueChange,
+    LoginPageAction.pwdChanged: _onValueChange,
     LoginPageAction.loginclicked: _onLoginClicked,
     Lifecycle.initState: _onInit,
     Lifecycle.build: _onBuild,
-    Lifecycle.dispose: _onDispose
+    Lifecycle.dispose: _onDispose,
   });
 }
 
 //final FirebaseAuth _auth = FirebaseAuth.instance;
+
+final RestClient _api = new RestClient();
 
 void _onInit(Action action, Context<LoginPageState> ctx) {
   ctx.state.accountFocusNode = FocusNode();
@@ -27,6 +34,9 @@ void _onInit(Action action, Context<LoginPageState> ctx) {
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.submitAnimationController = AnimationController(
+      vsync: ticker, duration: Duration(milliseconds: 1000));
+
+  ctx.state.errorMessageAnimationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 1000));
 }
 
@@ -40,13 +50,33 @@ void _onDispose(Action action, Context<LoginPageState> ctx) {
   ctx.state.accountFocusNode.dispose();
   ctx.state.pwdFocusNode.dispose();
   ctx.state.submitAnimationController.dispose();
+  ctx.state.errorMessageAnimationController.dispose();
 }
 
-void _onAction(Action action, Context<LoginPageState> ctx) {}
+bool _onValueChange(Action action, Context<LoginPageState> ctx) {
+  ctx.state.errorMessageAnimationController.reverse();
+  return false;
+}
 
 Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
+//  _api.getUserProfile(user)
 
-  Toast.show("test ${ctx.state.pwd}", ctx.context, duration: 3, gravity: Toast.BOTTOM);
+  ctx.state.errorMessageAnimationController.reverse();
+  ctx.state.submitAnimationController.forward();
+
+  try {
+    await _api.getUserProfile(FirebaseUser(
+        baseUrl: ctx.state.url,
+        username: ctx.state.account,
+        password: ctx.state.pwd));
+  } on Exception catch (e) {
+    Future.delayed(Duration(seconds: 1), () {
+      ctx.dispatch(LoginPageActionCreator.onErrorMessage("Login problem"));
+      ctx.state.submitAnimationController.reverse();
+      ctx.state.errorMessageAnimationController.forward();
+    });
+  }
+
 //  AuthResult result;
 //  ctx.state.submitAnimationController.forward();
 //  if (ctx.state.account != '' && ctx.state.pwd != '') {
@@ -68,4 +98,3 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
 //    Navigator.of(ctx.context).pop(true);
 //  }
 }
-

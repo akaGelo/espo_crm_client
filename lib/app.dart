@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
+
 //import 'package:movie/actions/apihelper.dart';
 import 'package:espo_crm_client/views/account_page/page.dart';
+
 //import 'package:movie/views/coming_page/page.dart';
 //import 'package:movie/views/createlist_page/page.dart';
 //import 'package:movie/views/discover_page/page.dart';
@@ -17,6 +19,7 @@ import 'package:espo_crm_client/views/account_page/page.dart';
 //import 'package:movie/views/listdetail_page/page.dart';
 import 'package:espo_crm_client/views/login_page/page.dart';
 import 'package:espo_crm_client/views/main_page/page.dart';
+
 //import 'package:movie/views/moviedetail_page/page.dart';
 //import 'package:movie/views/mylists_page/page.dart';
 //import 'package:movie/views/peopledetail_page/page.dart';
@@ -31,7 +34,6 @@ import 'package:espo_crm_client/views/main_page/page.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 Future _init() async {
   if (Platform.isAndroid)
@@ -48,12 +50,10 @@ Future _init() async {
 //    ApiHelper.session = session;
 //  }
 //  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;
-
-
 }
 
-Future<Widget> createApp() async {
-  final AbstractRoutes routes = PageRoutes(
+AbstractRoutes pages() {
+  return PageRoutes(
     pages: <String, Page<Object, dynamic>>{
       'mainpage': MainPage(),
 //      'homePage': HomePage(),
@@ -82,24 +82,8 @@ Future<Widget> createApp() async {
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
-        page.connectExtraStore<GlobalState>(GlobalStore.store,
-            (Object pagestate, GlobalState appState) {
-          final GlobalBaseState p = pagestate;
-          if (p.themeColor != appState.themeColor ||
-              p.locale != appState.locale ||
-              p.user != appState.user) {
-            if (pagestate is Cloneable) {
-              final Object copy = pagestate.clone();
-              final GlobalBaseState newState = copy;
-              newState.themeColor = appState.themeColor;
-              newState.locale = appState.locale;
-              newState.user = appState.user;
-              //I18n.onLocaleChanged(appState.locale);
-              return newState;
-            }
-          }
-          return pagestate;
-        });
+        page.connectExtraStore<GlobalState>(
+            GlobalStore.store, connectGlobalStore);
       }
       page.enhancer.append(
         /// View AOP
@@ -124,11 +108,13 @@ Future<Widget> createApp() async {
       );
     },
   );
+}
+
+Future<Widget> createApp() async {
+  final AbstractRoutes routes = pages();
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
   await _init();
-
-
 
   return MaterialApp(
     title: 'Movie',

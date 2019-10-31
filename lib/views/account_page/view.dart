@@ -127,6 +127,7 @@ Widget buildView(
                                     ),
                                   ),
                                   IconButton(
+                                    key: Key("loginButton"),
                                     onPressed: () {
                                       if (state.islogin)
                                         dispatch(AccountPageActionCreator

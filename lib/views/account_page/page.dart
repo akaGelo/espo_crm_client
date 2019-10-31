@@ -17,9 +17,7 @@ class AccountPage extends Page<AccountPageState, Map<String, dynamic>> {
           reducer: buildReducer(),
           view: buildView,
           dependencies: Dependencies<AccountPageState>(
-              adapter: null,
-              slots: <String, Dependent<AccountPageState>>{
-              }),
+              adapter: null, slots: <String, Dependent<AccountPageState>>{}),
           middleware: <Middleware<AccountPageState>>[],
         );
 }

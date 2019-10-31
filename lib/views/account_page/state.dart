@@ -1,11 +1,9 @@
 import 'dart:ui';
 
-
 import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:espo_crm_client/globalbasestate/state.dart';
-
 
 class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   String name;

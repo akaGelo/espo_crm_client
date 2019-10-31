@@ -31,4 +31,3 @@ AccountPageState _onInit(AccountPageState state, Action action) {
   newState.acountIdV4 = accountIdV4;
   return newState;
 }
-

@@ -32,6 +32,18 @@ Map<String, dynamic> _$LeadsListToJson(LeadsList instance) => <String, dynamic>{
       'list': instance.list,
     };
 
+UserResponse _$UserResponseFromJson(Map<String, dynamic> json) {
+  return UserResponse()
+    ..user = json['user'] == null
+        ? null
+        : UserProfile.fromJson(json['user'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
+    <String, dynamic>{
+      'user': instance.user,
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -44,7 +56,29 @@ class __RestClient implements _RestClient {
   final Dio _dio;
 
   @override
-  _getLeads(authorization) async {
+  _getUserProfile(authorization) async {
+    ArgumentError.checkNotNull(authorization, 'authorization');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/App/user',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{'Authorization': authorization},
+            extra: _extra),
+        data: _data);
+    final value = UserResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  _getLeads(authorization,
+      {offset = 0,
+      maxSize = 20,
+      sortBy = "createdAt&order=desc",
+      asc = true}) async {
     ArgumentError.checkNotNull(authorization, 'authorization');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

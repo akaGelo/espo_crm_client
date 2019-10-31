@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:espo_crm_client/model/lead.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,7 +16,11 @@ part 'api.g.dart';
 ///```
 
 class RestClient extends __RestClient {
-  RestClient(Dio dio) : super(dio);
+  RestClient() : super(_defaultDio());
+
+  Future<UserProfile> getUserProfile(FirebaseUser user) =>
+      _getUserProfile(basicAuthenticationHeader(user))
+          .then((ur) => Future.value(ur.user));
 
   Future<LeadsList> getLeads(FirebaseUser authorization) =>
       _getLeads(basicAuthenticationHeader(authorization));
@@ -29,14 +34,29 @@ class RestClient extends __RestClient {
     var credentials = '${user.username}:${user.password}';
     return 'Basic ' + base64Encode(utf8.encode(credentials));
   }
+
+  static Dio _defaultDio() {
+    final dio = Dio();
+    dio.options.headers["Content-Type"] = "application/json";
+    dio.transformer = FlutterTransformer();
+    return dio;
+  }
 }
 
 @RestApi()
 abstract class _RestClient {
   factory _RestClient(Dio dio) = __RestClient;
 
+  @GET("/App/user")
+  Future<UserResponse> _getUserProfile(
+      @Header("Authorization") String authorization);
+
   @GET("/Lead")
-  Future<LeadsList> _getLeads(@Header("Authorization") String authorization);
+  Future<LeadsList> _getLeads(@Header("Authorization") String authorization,
+      {int offset = 0,
+      int maxSize = 20,
+      String sortBy = "createdAt&order=desc",
+      bool asc = true});
 
   @GET("/Lead/{id}")
   Future<FullLead> _getLead(
@@ -74,4 +94,16 @@ class LeadsList extends _PageResponse<Lead> {
       _$LeadsListFromJson(json);
 
   Map<String, dynamic> toJson() => _$LeadsListToJson(this);
+}
+
+@JsonSerializable()
+class UserResponse {
+  UserProfile user;
+
+  UserResponse();
+
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }

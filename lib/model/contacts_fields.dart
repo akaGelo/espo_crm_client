@@ -10,10 +10,10 @@ class EmailAddressData {
   bool optOut;
   bool invalid;
 
-
   EmailAddressData();
 
-  factory EmailAddressData.fromJson(Map<String, dynamic> json) => _$EmailAddressDataFromJson(json);
+  factory EmailAddressData.fromJson(Map<String, dynamic> json) =>
+      _$EmailAddressDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmailAddressDataToJson(this);
 }
@@ -24,10 +24,10 @@ class PhoneNumberData {
   bool primary;
   String type;
 
-
   PhoneNumberData();
 
-  factory PhoneNumberData.fromJson(Map<String, dynamic> json) => _$PhoneNumberDataFromJson(json);
+  factory PhoneNumberData.fromJson(Map<String, dynamic> json) =>
+      _$PhoneNumberDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$PhoneNumberDataToJson(this);
 }
