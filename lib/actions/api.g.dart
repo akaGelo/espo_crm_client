@@ -62,7 +62,7 @@ class __RestClient implements _RestClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/App/user',
+        '/api/v1/App/user',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -83,7 +83,8 @@ class __RestClient implements _RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request('/Lead',
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/api/v1/Lead',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -102,7 +103,7 @@ class __RestClient implements _RestClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/Lead/$id',
+        '/api/v1/Lead/$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

@@ -23,6 +23,7 @@ AccountPageState _onInit(AccountPageState state, Action action) {
   final bool islogin = action.payload[2] ?? false;
   final int accountIdV3 = action.payload[3];
   final String accountIdV4 = action.payload[4];
+//
   final AccountPageState newState = state.clone();
   newState.name = name;
   newState.avatar = avatar;

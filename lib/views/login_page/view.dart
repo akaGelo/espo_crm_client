@@ -35,10 +35,9 @@ Widget buildView(
                   ),
                 )),
                 child: Image.asset(
-                  'images/c3po.png',
+                  'images/espocrm.png',
                   width: Adapt.px(150),
                   height: Adapt.px(150),
-                  color: Colors.white,
                 )),
           )),
     );
@@ -177,7 +176,7 @@ Widget buildView(
         child: Card(
           elevation: 10,
           child: Container(
-            height: Adapt.screenH() / 1.7,
+            height: Adapt.screenH() / 2,
             width: Adapt.screenW() * 0.9,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

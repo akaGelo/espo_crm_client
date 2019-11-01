@@ -43,6 +43,7 @@ flutter:
 
   assets:
     #  - images/a_dot_burr.jpeg
+    - images/espocrm.png
     - images/CacheBG.jpg
     - images/facebook_circle.png
     - images/twitter_circle.png

@@ -65,10 +65,15 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
   ctx.state.submitAnimationController.forward();
 
   try {
-    await _api.getUserProfile(FirebaseUser(
+    var firebaseUser = FirebaseUser(
         baseUrl: ctx.state.url,
         username: ctx.state.account,
-        password: ctx.state.pwd));
+        password: ctx.state.pwd);
+
+    await _api.getUserProfile(firebaseUser);
+
+    GlobalStore.store.dispatch(GlobalActionCreator.setUser(firebaseUser));
+    Navigator.of(ctx.context).pop(true);
   } on Exception catch (e) {
     Future.delayed(Duration(seconds: 1), () {
       ctx.dispatch(LoginPageActionCreator.onErrorMessage("Login problem"));

@@ -47,18 +47,18 @@ class RestClient extends __RestClient {
 abstract class _RestClient {
   factory _RestClient(Dio dio) = __RestClient;
 
-  @GET("/App/user")
+  @GET("/api/v1/App/user")
   Future<UserResponse> _getUserProfile(
       @Header("Authorization") String authorization);
 
-  @GET("/Lead")
+  @GET("/api/v1/Lead")
   Future<LeadsList> _getLeads(@Header("Authorization") String authorization,
       {int offset = 0,
       int maxSize = 20,
       String sortBy = "createdAt&order=desc",
       bool asc = true});
 
-  @GET("/Lead/{id}")
+  @GET("/api/v1/Lead/{id}")
   Future<FullLead> _getLead(
       @Header("Authorization") String authorization, @Path("id") String id);
 

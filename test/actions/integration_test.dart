@@ -5,7 +5,7 @@ import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
-const baseUrl = "https://demo2.espocrm.com/api/v1";
+const baseUrl = "https://demo2.espocrm.com";
 final demoCredentials =
     FirebaseUser(baseUrl: baseUrl, username: "admin", password: "1");
 
