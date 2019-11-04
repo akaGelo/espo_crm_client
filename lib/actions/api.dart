@@ -18,17 +18,17 @@ part 'api.g.dart';
 class RestClient extends __RestClient {
   RestClient() : super(_defaultDio());
 
-  Future<UserProfile> getUserProfile(FirebaseUser user) =>
+  Future<UserProfile> getUserProfile(Credentials user) =>
       _getUserProfile(basicAuthenticationHeader(user))
           .then((ur) => Future.value(ur.user));
 
-  Future<LeadsList> getLeads(FirebaseUser authorization) =>
-      _getLeads(basicAuthenticationHeader(authorization));
+  Future<LeadsList> getLeads(Credentials authorization, {int offset = 0}) =>
+      _getLeads(basicAuthenticationHeader(authorization), offset: offset);
 
-  Future<FullLead> getLead(FirebaseUser authorization, String id) =>
+  Future<FullLead> getLead(Credentials authorization, String id) =>
       _getLead(basicAuthenticationHeader(authorization), id);
 
-  String basicAuthenticationHeader(FirebaseUser user) {
+  String basicAuthenticationHeader(Credentials user) {
     //костылик конечно, но нужно, что бы было удобно задавать в пользователе хост crm
     _dio.options.baseUrl = user.baseUrl;
     var credentials = '${user.username}:${user.password}';
@@ -53,10 +53,10 @@ abstract class _RestClient {
 
   @GET("/api/v1/Lead")
   Future<LeadsList> _getLeads(@Header("Authorization") String authorization,
-      {int offset = 0,
-      int maxSize = 20,
-      String sortBy = "createdAt&order=desc",
-      bool asc = true});
+      {@Query("offset") int offset = 0,
+      @Query("maxSize") int maxSize = 20,
+      @Query("sortBy") String sortBy = "createdAt&order=desc",
+      @Query("asc") bool asc = true});
 
   @GET("/api/v1/Lead/{id}")
   Future<FullLead> _getLead(

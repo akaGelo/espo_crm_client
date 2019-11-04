@@ -65,7 +65,7 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
   ctx.state.submitAnimationController.forward();
 
   try {
-    var firebaseUser = FirebaseUser(
+    var firebaseUser = Credentials.simple(
         baseUrl: ctx.state.url,
         username: ctx.state.account,
         password: ctx.state.pwd);

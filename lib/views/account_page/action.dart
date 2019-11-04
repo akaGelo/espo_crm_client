@@ -1,9 +1,10 @@
+import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:fish_redux/fish_redux.dart';
 
 enum AccountPageAction {
   action,
   login,
-  init,
+  profile,
   logout,
   navigatorPush,
   themeChanged
@@ -18,10 +19,8 @@ class AccountPageActionCreator {
     return Action(AccountPageAction.login);
   }
 
-  static Action onInit(String name, String avatar, bool islogin, int acountIdV3,
-      String acountIdV4) {
-    return Action(AccountPageAction.init,
-        payload: [name, avatar, islogin, acountIdV3, acountIdV4]);
+  static Action onProfile(UserProfile userProfile) {
+    return Action(AccountPageAction.profile, payload: userProfile);
   }
 
   static Action onLogout() {

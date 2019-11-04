@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:espo_crm_client/actions/Adapt.dart';
+import 'package:espo_crm_client/actions/adapt.dart';
+import 'package:espo_crm_client/actions/gravatar.dart';
 import 'package:espo_crm_client/customwidgets/customcliper_path.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +57,16 @@ Widget buildView(
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: CachedNetworkImageProvider(
-                          state.avatar ??
-                              'https://en.gravatar.com/userimage/159547793/1e81c1798f922e37511065a9c301fed9.jpg?size=200',
+                          asGravatarUrl(state.isLogin
+                              ? state.userProfile.emailAddress
+                              : "https://www.gravatar.com/avatar/00000000000000000000000000000000"),
                           errorListener: () {}),
                       fit: BoxFit.cover),
                   border: Border.all(width: Adapt.px(8), color: Colors.white),
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(Adapt.px(90))),
             ),
-            Text(state.name,
+            Text(state.isLogin ? state.userProfile.name : '  ',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: Adapt.px(50),
@@ -129,7 +131,7 @@ Widget buildView(
                                   IconButton(
                                     key: Key("loginButton"),
                                     onPressed: () {
-                                      if (state.islogin)
+                                      if (state.isLogin)
                                         dispatch(AccountPageActionCreator
                                             .onLogout());
                                       else
@@ -137,7 +139,7 @@ Widget buildView(
                                             AccountPageActionCreator.onLogin());
                                     },
                                     icon: Icon(
-                                      state.islogin
+                                      state.isLogin
                                           ? Icons.exit_to_app
                                           : Icons.person_outline,
                                       color: Colors.white,
@@ -152,15 +154,9 @@ Widget buildView(
                   0,
                   0.2,
                   () => dispatch(AccountPageActionCreator.navigatorPush(
-                      'WatchlistPage',
-                      arguments: {'accountid': state.acountIdV3}))),
-              _buildTapCell(
-                  "Open Browser",
-                  0.1,
-                  0.3,
-                  () => dispatch(AccountPageActionCreator.navigatorPush(
-                      'MyListsPage',
-                      arguments: {'accountid': state.acountIdV4}))),
+                      'contactSyncPage',
+                      arguments: {'test': state.userProfile}))),
+              _buildTapCell("Open Browser", 0.1, 0.3, () => {}),
             ],
           ),
         )),

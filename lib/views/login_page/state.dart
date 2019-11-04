@@ -40,7 +40,7 @@ class LoginPageState implements GlobalBaseState, Cloneable<LoginPageState> {
   Locale locale;
 
   @override
-  FirebaseUser user;
+  Credentials user;
 }
 
 LoginPageState initState(Map<String, dynamic> args) {

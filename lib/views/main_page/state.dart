@@ -20,7 +20,7 @@ class MainPageState implements GlobalBaseState, Cloneable<MainPageState> {
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  Credentials user;
 }
 
 MainPageState initState(Map<String, dynamic> args) {

@@ -77,11 +77,16 @@ class __RestClient implements _RestClient {
   _getLeads(authorization,
       {offset = 0,
       maxSize = 20,
-      sortBy = "createdAt&order=desc",
+      sortBy = "createdAt",
       asc = true}) async {
     ArgumentError.checkNotNull(authorization, 'authorization');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      'offset': offset,
+      'maxSize': maxSize,
+      'sortBy': sortBy,
+      'asc': asc
+    };
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/api/v1/Lead',

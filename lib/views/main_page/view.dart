@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:espo_crm_client/actions/Adapt.dart';
+import 'package:espo_crm_client/actions/adapt.dart';
 import 'package:espo_crm_client/customwidgets/keepalive_widget.dart';
 
 import 'action.dart';

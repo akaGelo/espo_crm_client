@@ -36,6 +36,6 @@ GlobalState _onChangeLocale(GlobalState state, Action action) {
 }
 
 GlobalState _onSetUser(GlobalState state, Action action) {
-  final FirebaseUser user = action.payload;
+  final Credentials user = action.payload;
   return state.clone()..user = user;
 }

@@ -1,6 +1,9 @@
 import 'dart:io';
 
 //import 'package:common_utils/common_utils.dart';
+import 'package:espo_crm_client/globalbasestate/action.dart';
+import 'package:espo_crm_client/model/firebase_user.dart';
+import 'package:espo_crm_client/views/concact_sync_page/page.dart';
 import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
@@ -19,6 +22,7 @@ import 'package:espo_crm_client/views/account_page/page.dart';
 //import 'package:movie/views/listdetail_page/page.dart';
 import 'package:espo_crm_client/views/login_page/page.dart';
 import 'package:espo_crm_client/views/main_page/page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //import 'package:movie/views/moviedetail_page/page.dart';
 //import 'package:movie/views/mylists_page/page.dart';
@@ -35,27 +39,24 @@ import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future _init() async {
-  if (Platform.isAndroid)
+import 'package:espo_crm_client/actions/shared_preferences.dart' as prefs;
+
+Future<Credentials> _init() async {
+  if (Platform.isAndroid) {
     Map<PermissionGroup, PermissionStatus> permissions =
         await PermissionHandler()
             .requestPermissions([PermissionGroup.contacts]);
+  }
 
-//  SharedPreferences prefs = await SharedPreferences.getInstance();
-//  var session = prefs.getString('loginsession');
-//  String accessToken = prefs.getString('accessTokenV4');
-//  if (session == null) {
-//    await ApiHelper.createGuestSession();
-//  } else {
-//    ApiHelper.session = session;
-//  }
-//  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;
+  var loadUser = prefs.loadUser();
+  return loadUser;
 }
 
 AbstractRoutes pages() {
   return PageRoutes(
     pages: <String, Page<Object, dynamic>>{
       'mainpage': MainPage(),
+      'contactSyncPage' : ConctactSyncPage(),
 //      'homePage': HomePage(),
 //      'discoverPage': DiscoverPage(),
 //      'comingPage': ComingPage(),
@@ -111,13 +112,19 @@ AbstractRoutes pages() {
 }
 
 Future<Widget> createApp() async {
+  Credentials credentials = await _init();
+
+  credentials = new Credentials.simple(
+      baseUrl: "https://crm.devorel.com", username: "gelo", password: "52urgwydwgjer");
+
+  GlobalStore.store.dispatch(GlobalActionCreator.setUser(credentials));
+
   final AbstractRoutes routes = pages();
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
-  await _init();
 
   return MaterialApp(
-    title: 'Movie',
+    title: 'EspoCrm',
     debugShowCheckedModeBanner: false,
     theme: _lightTheme,
     darkTheme: _darkTheme,

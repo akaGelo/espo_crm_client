@@ -6,6 +6,20 @@ part of 'firebase_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+Credentials _$CredentialsFromJson(Map<String, dynamic> json) {
+  return Credentials()
+    ..baseUrl = json['baseUrl'] as String
+    ..username = json['username'] as String
+    ..password = json['password'] as String;
+}
+
+Map<String, dynamic> _$CredentialsToJson(Credentials instance) =>
+    <String, dynamic>{
+      'baseUrl': instance.baseUrl,
+      'username': instance.username,
+      'password': instance.password,
+    };
+
 UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
   return UserProfile()
     ..name = json['name'] as String

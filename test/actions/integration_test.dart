@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 
 const baseUrl = "https://demo2.espocrm.com";
 final demoCredentials =
-    FirebaseUser(baseUrl: baseUrl, username: "admin", password: "1");
+    Credentials.simple(baseUrl: baseUrl, username: "admin", password: "1");
 
 final logger = Logger();
 
@@ -23,7 +23,7 @@ void main() {
 
   test('Get User 401', () async {
     final wrongCredentials =
-        FirebaseUser(baseUrl: baseUrl, username: "wrong", password: "1");
+        Credentials.simple(baseUrl: baseUrl, username: "wrong", password: "1");
     try {
       await client.getUserProfile(wrongCredentials);
       fail("exception not thrown");

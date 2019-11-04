@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:espo_crm_client/actions/Adapt.dart';
+import 'package:espo_crm_client/actions/adapt.dart';
 import 'package:espo_crm_client/customwidgets/customcliper_path.dart';
 
 import 'action.dart';

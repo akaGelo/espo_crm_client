@@ -20,6 +20,11 @@ class Lead {
 
 @JsonSerializable()
 class FullLead extends Lead {
+
+  String firstName;
+  String lastName;
+
+
   List<EmailAddressData> emailAddressData;
   List<PhoneNumberData> phoneNumberData;
 

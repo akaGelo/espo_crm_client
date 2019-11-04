@@ -1,13 +1,17 @@
 import 'package:espo_crm_client/model/firebase_user.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+
 //import 'package:espo_crm_client/actions/apihelper.dart';
 import 'package:espo_crm_client/customwidgets/custom_stfstate.dart';
 import 'package:espo_crm_client/globalbasestate/action.dart';
 import 'package:espo_crm_client/globalbasestate/store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import 'action.dart';
 import 'state.dart';
+
+import 'package:espo_crm_client/actions/api.dart';
 
 Effect<AccountPageState> buildEffect() {
   return combineEffects(<Object, Effect<AccountPageState>>{
@@ -22,6 +26,9 @@ Effect<AccountPageState> buildEffect() {
 }
 
 //final FirebaseAuth _auth = FirebaseAuth.instance;
+
+RestClient apiClient = RestClient();
+
 void _onAction(Action action, Context<AccountPageState> ctx) {}
 
 Future _onLogin(Action action, Context<AccountPageState> ctx) async {
@@ -35,19 +42,12 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }
-  var prefs = await SharedPreferences.getInstance();
-
-  //final FirebaseUser currentUser = await _auth.currentUser();
-  //String name = prefs.getString('accountname');
-  //String avatar = prefs.getString('accountgravatar');
-  //bool islogin = prefs.getBool('islogin') ?? false;
-  int accountIdV3 = prefs.getInt('accountid');
-  String name = ctx.state.user?.displayName;
-  String avatar = ctx.state.user?.photoUrl;
-  bool islogin = ctx.state.user != null;
-  String accountIdV4 = prefs.getString('accountIdV4');
-  ctx.dispatch(AccountPageActionCreator.onInit(
-      name, avatar, islogin, accountIdV3, accountIdV4));
+  try {
+    var userProfile = await apiClient.getUserProfile(ctx.state.user);
+    ctx.dispatch(AccountPageActionCreator.onProfile(userProfile));
+  } catch (e) {
+    Toast.show("Fail profile laod", ctx.context);
+  }
 }
 
 void _onBuild(Action action, Context<AccountPageState> ctx) {
@@ -59,8 +59,8 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 }
 
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
-  //var q = await ApiHelper.deleteSession();
-  //if (q) await _onInit(action, ctx);
+//  var q = await ApiHelper.deleteSession();
+//  if (q) await _onInit(action, ctx);
 
 //  final FirebaseUser currentUser = await _auth.currentUser();
 //  if (currentUser != null) {
@@ -70,10 +70,13 @@ Future _onLogout(Action action, Context<AccountPageState> ctx) async {
 //    } on Exception catch (e) {}
 //    await _onInit(action, ctx);
 //  }
+
+  ctx.dispatch(AccountPageActionCreator.onProfile(null));
+  GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
 }
 
 Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
-  if (!ctx.state.islogin)
+  if (!ctx.state.isLogin)
     await _onLogin(action, ctx);
   else {
     String routerName = action.payload[0];

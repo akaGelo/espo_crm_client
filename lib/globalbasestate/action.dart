@@ -14,7 +14,7 @@ class GlobalActionCreator {
     return Action(GlobalAction.changeLocale, payload: l);
   }
 
-  static Action setUser(FirebaseUser user) {
+  static Action setUser(Credentials user) {
     return Action(GlobalAction.setUser, payload: user);
   }
 }

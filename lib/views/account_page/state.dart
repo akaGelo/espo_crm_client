@@ -6,21 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:espo_crm_client/globalbasestate/state.dart';
 
 class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
-  String name;
-  String avatar;
-  bool islogin;
-  int acountIdV3;
-  String acountIdV4;
+  UserProfile userProfile;
+
   AnimationController animationController;
+
+  bool get isLogin => null != userProfile;
+
   @override
   AccountPageState clone() {
     return AccountPageState()
-      ..name = name
-      ..avatar = avatar
-      ..islogin = islogin
+      ..userProfile = userProfile
       ..animationController = animationController
-      ..acountIdV3 = acountIdV3
-      ..acountIdV4 = acountIdV4
       ..locale = locale
       ..themeColor = themeColor
       ..user = user;
@@ -33,11 +29,9 @@ class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  Credentials user;
 }
 
 AccountPageState initState(Map<String, dynamic> args) {
-  return AccountPageState()
-    ..name = ''
-    ..islogin = false;
+  return AccountPageState();
 }

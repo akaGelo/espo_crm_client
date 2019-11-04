@@ -9,8 +9,8 @@ abstract class GlobalBaseState {
   Locale get locale;
   set locale(Locale locale);
 
-  FirebaseUser get user;
-  set user(FirebaseUser u);
+  Credentials get user;
+  set user(Credentials u);
 }
 
 class GlobalState implements GlobalBaseState, Cloneable<GlobalState> {
@@ -20,7 +20,7 @@ class GlobalState implements GlobalBaseState, Cloneable<GlobalState> {
   Locale locale;
 
   @override
-  FirebaseUser user;
+  Credentials user;
 
   @override
   GlobalState clone() {
